@@ -56,26 +56,6 @@ def validate_data(values):
     return True
 
 
-def update_sales_worksheet(data):
-    """
-    update worksheet
-    """
-    print("updating sales worksheet....")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("updated successsfully.\n")
-
-
-def update_surplus_worksheet(data):
-    """
-    update surplus worksheet
-    """
-    print("updating sales surplus worksheet....")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
-    print("updated successsfully.\n")
-
-
 def update_worksheet(data, worksheet):
     """
     List of integers to be inserted into a worksheet
@@ -107,6 +87,24 @@ def calculate_surplus_data(sales_row):
     return surplus_data
 
 
+def get_last_five_entries():
+    """
+    collect last 5 colums worth of data, 
+    and returns a list
+    .
+    """
+    sales = SHEET.worksheet("sales")
+    # column = sales.col_values(3)
+    # print(column)
+
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    pprint(columns)
+
+
+
 def main():
     """
     Run all program functions
@@ -119,4 +117,6 @@ def main():
 
 
 print("Welcome to love sandwiches")
-main()
+# main()
+
+get_last_five_entries()

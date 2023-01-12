@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -15,7 +16,10 @@ SHEET = GSPREAD_CLIENT.open('Copy of love_sandwiches')
 
 def get_sales_data():
     """
-    Definition here
+    Get sales figures from user.
+    run a loop to ensure data is valid
+    must be 6 entries seperated by commas
+    The loop will repeat until valid
     """
     while True:
         print("enter dales data")
@@ -52,4 +56,36 @@ def validate_data(values):
     return True
 
 
-data = get_sales_data()
+def update_sales_worksheet(data):
+    """
+    update worksheet
+    """
+    print("updating sales worksheet....")
+    sales_worksheet = SHEET.worksheet("sales")
+    sales_worksheet.append_row(data)
+    print("updated successsfully.\n")
+
+
+def calculate_surplus_data(sales_row):
+    """
+    Compare stock and calculate surplus
+    """
+    print("calculating surplus data...\n")
+    stock = SHEET.worksheet("stock").get_all_values()
+    stock_row = stock[-1]
+    print(stock_row)
+
+
+
+def main():
+    """
+    Run all program functions
+    """
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    calculate_surplus_data(sales_data)
+
+
+print("Welcome to love sandwiches")
+main()
